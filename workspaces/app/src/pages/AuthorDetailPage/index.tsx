@@ -75,8 +75,8 @@ const AuthorDetailPage: React.FC = () => {
         <Spacer height={Space * 2} />
 
         <Flex align="center" as="ul" direction="column" justify="center">
-          {author.books.map((book) => (
-            <BookListItem key={book.id} bookId={book.id} />
+          {author.books.map((book, index) => (
+            <BookListItem eagerLoad={index < 5} key={book.id} book={{ ...book, author }} />
           ))}
           {author.books.length === 0 && (
             <>
@@ -101,8 +101,10 @@ const AuthorDetailPageSkeleton: React.FC = () => {
         </_AuthorImageWrapper>
 
         <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
-          <Skeleton height={20} width={128} />
-          <Skeleton height={14} width={128} />
+          <Skeleton height={20} fullWidth />
+          <Skeleton height={20} fullWidth />
+          <Skeleton height={20} fullWidth />
+          <Skeleton height={20} fullWidth />
         </Flex>
       </_HeadingWrapper>
 
@@ -116,7 +118,7 @@ const AuthorDetailPageSkeleton: React.FC = () => {
         <Spacer height={Space * 2} />
 
         <Flex align="center" as="ul" direction="column" justify="center">
-          {Array.from({ length: 10 }).map((_, index) => (
+          {Array.from({ length: 20 }).map((_, index) => (
             <BookListItemSkeleton key={`book-${index}`} />
           ))}
         </Flex>

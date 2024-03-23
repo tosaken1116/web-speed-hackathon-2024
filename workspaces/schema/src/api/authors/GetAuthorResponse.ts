@@ -15,6 +15,7 @@ export const GetAuthorResponseSchema = createSelectSchema(author)
         description: true,
         id: true,
         name: true,
+        nameRuby: true,
       })
       .extend({
         episodes: createSelectSchema(episode)

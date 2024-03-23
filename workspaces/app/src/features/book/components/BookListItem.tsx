@@ -7,10 +7,9 @@ import { Link } from '../../../foundation/components/Link';
 import { Separator } from '../../../foundation/components/Separator';
 import { Spacer } from '../../../foundation/components/Spacer';
 import { Text } from '../../../foundation/components/Text';
-import { useImage } from '../../../foundation/hooks/useImage';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
-import { useBook } from '../hooks/useBook';
 import { Skeleton } from '../../../foundation/components/Skeleton';
+import { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 
 const _Wrapper = styled.li`
   width: 100%;
@@ -29,12 +28,11 @@ const _ImgWrapper = styled.div`
 `;
 
 type Props = {
-  bookId: string;
+  eagerLoad: boolean;
+  book: Omit<GetBookResponse, 'episode'>;
 };
 
-export const BookListItem: React.FC<Props> = ({ bookId }) => {
-  const { data: book } = useBook({ params: { bookId } });
-
+export const BookListItem: React.FC<Props> = ({ book, eagerLoad }) => {
   const href = `${window.location.protocol}//${window.location.host}`;
   const imageUrl = `${href}/assets/images/${book.image.id}.webp`;
   return (
@@ -43,7 +41,14 @@ export const BookListItem: React.FC<Props> = ({ bookId }) => {
         <Spacer height={Space * 1.5} />
         <Flex align="flex-start" gap={Space * 2.5} justify="flex-start">
           <_ImgWrapper>
-            <Image alt={book.name} height={64} objectFit="cover" src={imageUrl} width={64} />
+            <Image
+              alt={book.name}
+              height={64}
+              objectFit="cover"
+              loading={eagerLoad ? 'eager' : 'lazy'}
+              src={imageUrl}
+              width={64}
+            />
           </_ImgWrapper>
           <Box width="100%">
             <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
