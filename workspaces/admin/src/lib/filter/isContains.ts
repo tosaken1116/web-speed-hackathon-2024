@@ -22,5 +22,5 @@ export function isContains({ query, target }: Params): boolean {
   const normalizedQuery = normalizeString(query);
   const normalizedTarget = normalizeString(target);
 
-  return normalizedQuery.includes(normalizedTarget);
+  return normalizedTarget.includes(normalizedQuery);
 }
