@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import styled from 'styled-components';
 
 import { SvgIcon } from '../../../features/icons/components/SvgIcon';
@@ -10,7 +9,6 @@ import { Separator } from '../../../foundation/components/Separator';
 import { Spacer } from '../../../foundation/components/Spacer';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
-import { useBook } from '../../book/hooks/useBook';
 import { Skeleton } from '../../../foundation/components/Skeleton';
 import { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 
@@ -140,12 +138,4 @@ export const RankingCardSkeleton = () => {
   );
 };
 
-const RankingCardWithSuspense: React.FC<Props> = (props) => {
-  return (
-    <Suspense fallback={null}>
-      <RankingCard {...props} />
-    </Suspense>
-  );
-};
-
-export { RankingCardWithSuspense as RankingCard };
+export { RankingCard };

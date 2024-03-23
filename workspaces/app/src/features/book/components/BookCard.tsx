@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { styled } from 'styled-components';
 
 import { Flex } from '../../../foundation/components/Flex';
@@ -6,8 +5,6 @@ import { Image } from '../../../foundation/components/Image';
 import { Link } from '../../../foundation/components/Link';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
-import { useBook } from '../hooks/useBook';
-import { book } from '@wsh-2024/schema/src/models';
 import { Skeleton } from '../../../foundation/components/Skeleton';
 import { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 
@@ -87,12 +84,4 @@ export const BookCardSkeleton = () => {
   );
 };
 
-const BookCardWithSuspense: React.FC<Props> = (props) => {
-  return (
-    <Suspense fallback={null}>
-      <BookCard {...props} />
-    </Suspense>
-  );
-};
-
-export { BookCardWithSuspense as BookCard };
+export { BookCard };
