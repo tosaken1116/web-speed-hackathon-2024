@@ -1,47 +1,50 @@
 import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Spacer, Stack } from '@chakra-ui/react';
-import { useFormik } from 'formik';
-import { useId } from 'react';
-import * as yup from 'yup';
-
+import { useId, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLogin } from '../../../features/auth/hooks/useLogin';
-
+type FormInput = {
+  email: string;
+  password: string;
+};
 export const LoginContent: React.FC = () => {
   const login = useLogin();
   const loginContentA11yId = useId();
-
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    async onSubmit(values) {
-      login.mutate({ email: values.email, password: values.password });
-    },
-    validationSchema: yup.object().shape({
-      email: yup
-        .string()
-        .required('メールアドレスを入力してください')
-        .test({
-          message: 'メールアドレスには @ を含めてください',
-          test: (v) => /^(?:[^@]*){12,}$/v.test(v) === false,
-        }),
-      password: yup
-        .string()
-        .required('パスワードを入力してください')
-        .test({
-          message: 'パスワードには記号を含めてください',
-          test: (v) => /^(?:[^\P{Letter}&&\P{Number}]*){24,}$/v.test(v) === false,
-        }),
-    }),
+  const [{ email, password }, setForm] = useState<FormInput>({ email: '', password: '' });
+  const [{ email: emailError, password: passwordError }, setError] = useState<{ email: string; password: string }>({
+    email: '',
+    password: '',
   });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!email) {
+      setError((prev) => ({ ...prev, email: 'メールアドレスを入力してください' }));
+    }
+
+    if (!password) {
+      setError((prev) => ({ ...prev, password: 'パスワードを入力してください' }));
+    }
+
+    if (!email.includes('@')) {
+      setError((prev) => ({ ...prev, email: 'メールアドレスには @ を含めてください' }));
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/g.test(password)) {
+      setError((prev) => ({ ...prev, password: 'パスワードには記号を含めてください' }));
+    }
+    login.mutate({ email, password });
+  };
 
   return (
     <Box
       aria-labelledby={loginContentA11yId}
+      onSubmit={handleSubmit}
       as="form"
       bg="gray.100"
       borderRadius={8}
-      onSubmit={formik.handleSubmit}
       p={6}
       w="100%"
     >
@@ -50,31 +53,31 @@ export const LoginContent: React.FC = () => {
           ログイン
         </Heading>
 
-        <FormControl isInvalid={formik.touched.email && formik.errors.email != null}>
+        <FormControl>
           <FormLabel>メールアドレス</FormLabel>
           <Input
+            onChange={handleChange}
             bgColor="white"
             borderColor="gray.300"
             name="email"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
             placeholder="メールアドレス"
+            value={email}
           />
-          <FormErrorMessage role="alert">{formik.errors.email}</FormErrorMessage>
+          <FormErrorMessage role="alert">{emailError}</FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={formik.touched.password && formik.errors.password != null}>
+        <FormControl>
           <FormLabel>パスワード</FormLabel>
           <Input
+            onChange={handleChange}
             bgColor="white"
             borderColor="gray.300"
             name="password"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
             placeholder="パスワード"
             type="password"
+            value={password}
           />
-          <FormErrorMessage role="alert">{formik.errors.password}</FormErrorMessage>
+          <FormErrorMessage role="alert">{passwordError}</FormErrorMessage>
         </FormControl>
 
         <Spacer />
