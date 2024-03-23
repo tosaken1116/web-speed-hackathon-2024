@@ -24,7 +24,7 @@ const EpisodeDetailPage: React.FC = () => {
   return (
     <Box>
       <section aria-label="漫画ビューアー">
-        <ComicViewer episodeId={episode.id} />
+        <ComicViewer episode={episode} />
       </section>
 
       <Separator />

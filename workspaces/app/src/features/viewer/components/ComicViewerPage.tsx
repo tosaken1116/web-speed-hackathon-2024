@@ -22,10 +22,8 @@ export const ComicViewerPage = ({ pageImageId }: Props) => {
 
   useAsync(async () => {
     const image = new Image();
-    image.src = getImageUrl({
-      format: 'jxl',
-      imageId: pageImageId,
-    });
+    const href = `${window.location.protocol}//${window.location.host}`;
+    image.src = `${href}/assets/images/${pageImageId}.webp`;
     await image.decode();
 
     const canvas = ref.current!;
@@ -33,7 +31,7 @@ export const ComicViewerPage = ({ pageImageId }: Props) => {
     canvas.height = image.naturalHeight;
     const ctx = canvas.getContext('2d')!;
 
-    decrypt({
+    await decrypt({
       exportCanvasContext: ctx,
       sourceImage: image,
       sourceImageInfo: {
