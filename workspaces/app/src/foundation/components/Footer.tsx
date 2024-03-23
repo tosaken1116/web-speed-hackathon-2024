@@ -31,6 +31,9 @@ type Props = {
 };
 
 const ModalOpenButton = ({ updateDialogContent, id, isClient, type, children }: Props) => {
+  const {
+    data: { text },
+  } = useInfo({ params: { type: type } });
   const handleRequestToTermDialogOpen = () => {
     updateDialogContent(
       <_Content aria-labelledby={id} role="dialog">
@@ -44,9 +47,7 @@ const ModalOpenButton = ({ updateDialogContent, id, isClient, type, children }: 
       </_Content>,
     );
   };
-  const {
-    data: { text },
-  } = useInfo({ params: { type: type } });
+
   return (
     <_Button disabled={!isClient} onClick={handleRequestToTermDialogOpen}>
       {children}
