@@ -32,9 +32,10 @@ const _ImgWrapper = styled.div`
 type Props = {
   bookId: string;
   episodeId: string;
+  eagerLoad?: boolean;
 };
 
-export const EpisodeListItem: React.FC<Props> = ({ bookId, episodeId }) => {
+export const EpisodeListItem: React.FC<Props> = ({ bookId, episodeId, eagerLoad }) => {
   const { data: episode } = useEpisode({ params: { episodeId } });
 
   const imageUrl = useImage({ height: 96, imageId: episode.image.id, width: 96 });
@@ -44,11 +45,9 @@ export const EpisodeListItem: React.FC<Props> = ({ bookId, episodeId }) => {
       <_Link href={`/books/${bookId}/episodes/${episode.id}`}>
         <Spacer height={Space * 1.5} />
         <Flex align="flex-start" gap={Space * 2.5} justify="flex-start">
-          {imageUrl != null && (
-            <_ImgWrapper>
-              <Image alt={episode.name} height={96} objectFit="cover" src={imageUrl} width={96} loading="eager" />
-            </_ImgWrapper>
-          )}
+          <_ImgWrapper>
+            <Image alt={episode.name} height={96} src={imageUrl} width={96} loading={eagerLoad ? 'eager' : 'lazy'} />
+          </_ImgWrapper>
           <Box width="100%">
             <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
               <Flex align="center" justify="flex-start">
