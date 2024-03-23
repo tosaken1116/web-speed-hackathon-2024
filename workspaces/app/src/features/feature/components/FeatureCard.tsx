@@ -50,8 +50,8 @@ type Props = {
 const FeatureCard: React.FC<Props> = ({ bookId }) => {
   const { data: book } = useBook({ params: { bookId } });
 
-  const imageUrl = useImage({ height: 96, imageId: book.image.id, width: 96 });
-  const authorImageUrl = useImage({ height: 32, imageId: book.author.image.id, width: 32 });
+  const imageUrl = `${window.location.href}/assets/images/${book.image.id}.webp`;
+  const authorImageUrl = `${window.location.href}/assets/images/${book.author.image.id}.webp`;
 
   return (
     <_Wrapper href={`/books/${bookId}`}>
