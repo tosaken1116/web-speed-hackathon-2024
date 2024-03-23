@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { Skeleton } from '../../../foundation/components/Skeleton';
+import { useState } from 'react';
 
 // import { IMAGE_SRC } from './ImageSrc';
 
@@ -13,9 +15,18 @@ const _Image = styled.img`
 `;
 
 export const HeroImage: React.FC = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
   return (
     <_Wrapper>
-      <_Image src={'/assets/hero-image.webp'} alt="Cyber TOON" />
+      {!isLoaded && <Skeleton width={1920} height={1080} />}
+      <_Image
+        src={'/assets/hero-image.webp'}
+        alt="Cyber TOON"
+        onLoad={() => setIsLoaded(true)}
+        style={{
+          display: isLoaded ? 'inline-block' : 'none',
+        }}
+      />
     </_Wrapper>
   );
 };
