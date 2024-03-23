@@ -1,5 +1,3 @@
-import './side-effects';
-
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { SWRConfig } from 'swr';
