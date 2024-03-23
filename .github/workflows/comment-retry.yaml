@@ -1,8 +1,7 @@
 name: Comment on Another Repository's Issue
 
 on:
-  deployment_status:
-    types: [success]
+  deployment
 
 jobs:
   comment:
