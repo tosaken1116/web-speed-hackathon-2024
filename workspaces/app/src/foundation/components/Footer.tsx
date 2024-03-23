@@ -3,11 +3,6 @@ import React, { useId } from 'react';
 import styled from 'styled-components';
 
 import { DialogContentAtom } from '../atoms/DialogContentAtom';
-import { COMPANY } from '../constants/Company';
-import { CONTACT } from '../constants/Contact';
-import { OVERVIEW } from '../constants/Overview';
-import { QUESTION } from '../constants/Question';
-import { TERM } from '../constants/Term';
 import { Color, Space, Typography } from '../styles/variables';
 
 import { Box } from './Box';
@@ -16,6 +11,10 @@ import { Flex } from './Flex';
 import { Spacer } from './Spacer';
 import { Text } from './Text';
 
+import { useInfo } from '../../features/info/hooks/useInfo';
+
+type SetAtom<Args extends unknown[], Result> = (...args: Args) => Result;
+
 const _Button = styled(Button)`
   color: ${Color.MONO_A};
 `;
@@ -23,6 +22,37 @@ const _Button = styled(Button)`
 const _Content = styled.section`
   white-space: pre-line;
 `;
+type Props = {
+  updateDialogContent: SetAtom<[content: JSX.Element | null], void>;
+  id: string;
+  isClient: boolean;
+  type: 'term' | 'contact' | 'question' | 'company' | 'overview';
+  children: string;
+};
+
+const ModalOpenButton = ({ updateDialogContent, id, isClient, type, children }: Props) => {
+  const handleRequestToTermDialogOpen = () => {
+    updateDialogContent(
+      <_Content aria-labelledby={id} role="dialog">
+        <Text as="h2" color={Color.MONO_100} id={id} typography={Typography.NORMAL16}>
+          {children}
+        </Text>
+        <Spacer height={Space * 1} />
+        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
+          {text}
+        </Text>
+      </_Content>,
+    );
+  };
+  const {
+    data: { text },
+  } = useInfo({ params: { type: type } });
+  return (
+    <_Button disabled={!isClient} onClick={handleRequestToTermDialogOpen}>
+      {children}
+    </_Button>
+  );
+};
 
 export const Footer: React.FC = () => {
   const [isClient, setIsClient] = React.useState(false);
@@ -38,97 +68,54 @@ export const Footer: React.FC = () => {
   const overviewDialogA11yId = useId();
 
   const updateDialogContent = useSetAtom(DialogContentAtom);
-
-  const handleRequestToTermDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={termDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={termDialogA11yId} typography={Typography.NORMAL16}>
-          利用規約
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {TERM}
-        </Text>
-      </_Content>,
-    );
-  };
-
-  const handleRequestToContactDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={contactDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={contactDialogA11yId} typography={Typography.NORMAL16}>
-          お問い合わせ
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {CONTACT}
-        </Text>
-      </_Content>,
-    );
-  };
-
-  const handleRequestToQuestionDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={questionDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={questionDialogA11yId} typography={Typography.NORMAL16}>
-          Q&A
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {QUESTION}
-        </Text>
-      </_Content>,
-    );
-  };
-
-  const handleRequestToCompanyDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={companyDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={companyDialogA11yId} typography={Typography.NORMAL16}>
-          運営会社
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {COMPANY}
-        </Text>
-      </_Content>,
-    );
-  };
-
-  const handleRequestToOverviewDialogOpen = () => {
-    updateDialogContent(
-      <_Content aria-labelledby={overviewDialogA11yId} role="dialog">
-        <Text as="h2" color={Color.MONO_100} id={overviewDialogA11yId} typography={Typography.NORMAL16}>
-          Cyber TOONとは
-        </Text>
-        <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {OVERVIEW}
-        </Text>
-      </_Content>,
-    );
-  };
-
+  if (!isClient) {
+    return <></>;
+  }
   return (
     <Box as="footer" backgroundColor={Color.Background} p={Space * 1}>
       <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
         <img alt="Cyber TOON" src="/assets/cyber-toon.svg" />
         <Flex align="start" direction="row" gap={Space * 1.5} justify="center">
-          <_Button disabled={!isClient} onClick={handleRequestToTermDialogOpen}>
+          <ModalOpenButton
+            isClient={isClient}
+            id={termDialogA11yId}
+            type="term"
+            updateDialogContent={updateDialogContent}
+          >
             利用規約
-          </_Button>
-          <_Button disabled={!isClient} onClick={handleRequestToContactDialogOpen}>
+          </ModalOpenButton>
+          <ModalOpenButton
+            isClient={isClient}
+            id={contactDialogA11yId}
+            type="contact"
+            updateDialogContent={updateDialogContent}
+          >
             お問い合わせ
-          </_Button>
-          <_Button disabled={!isClient} onClick={handleRequestToQuestionDialogOpen}>
+          </ModalOpenButton>
+          <ModalOpenButton
+            isClient={isClient}
+            id={questionDialogA11yId}
+            type="question"
+            updateDialogContent={updateDialogContent}
+          >
             Q&A
-          </_Button>
-          <_Button disabled={!isClient} onClick={handleRequestToCompanyDialogOpen}>
+          </ModalOpenButton>
+          <ModalOpenButton
+            isClient={isClient}
+            id={companyDialogA11yId}
+            type="company"
+            updateDialogContent={updateDialogContent}
+          >
             運営会社
-          </_Button>
-          <_Button disabled={!isClient} onClick={handleRequestToOverviewDialogOpen}>
+          </ModalOpenButton>
+          <ModalOpenButton
+            isClient={isClient}
+            id={overviewDialogA11yId}
+            type="overview"
+            updateDialogContent={updateDialogContent}
+          >
             Cyber TOONとは
-          </_Button>
+          </ModalOpenButton>
         </Flex>
       </Flex>
     </Box>
