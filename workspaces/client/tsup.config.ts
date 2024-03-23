@@ -71,6 +71,7 @@ export default defineConfig(async (): Promise<Options[]> => {
         mangle: {
           // 圧縮されたファイル内の変数や関数の名前を短縮します。
           safari10: true,
+          module: true,
         },
         output: {
           ecma: 2020, // ECMAScriptバージョンを指定
