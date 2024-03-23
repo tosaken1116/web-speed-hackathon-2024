@@ -7,10 +7,8 @@ import { Link } from '../../../foundation/components/Link';
 import { Separator } from '../../../foundation/components/Separator';
 import { Spacer } from '../../../foundation/components/Spacer';
 import { Text } from '../../../foundation/components/Text';
-import { useImage } from '../../../foundation/hooks/useImage';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { useEpisode } from '../hooks/useEpisode';
-import { episode } from '@wsh-2024/schema/src/models';
 import { Skeleton } from '../../../foundation/components/Skeleton';
 
 const _Wrapper = styled.li`
@@ -38,8 +36,8 @@ type Props = {
 export const EpisodeListItem: React.FC<Props> = ({ bookId, episodeId, eagerLoad }) => {
   const { data: episode } = useEpisode({ params: { episodeId } });
 
-  const imageUrl = useImage({ height: 96, imageId: episode.image.id, width: 96 });
-
+  const href = `${window.location.protocol}//${window.location.host}`;
+  const imageUrl = `${href}/assets/images/${episode.image.id}.webp`;
   return (
     <_Wrapper>
       <_Link href={`/books/${bookId}/episodes/${episode.id}`}>
