@@ -10,6 +10,8 @@ import { Text } from '../../../foundation/components/Text';
 import { useImage } from '../../../foundation/hooks/useImage';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { useEpisode } from '../hooks/useEpisode';
+import { episode } from '@wsh-2024/schema/src/models';
+import { Skeleton } from '../../../foundation/components/Skeleton';
 
 const _Wrapper = styled.li`
   width: 100%;
@@ -44,7 +46,7 @@ export const EpisodeListItem: React.FC<Props> = ({ bookId, episodeId }) => {
         <Flex align="flex-start" gap={Space * 2.5} justify="flex-start">
           {imageUrl != null && (
             <_ImgWrapper>
-              <Image alt={episode.name} height={96} objectFit="cover" src={imageUrl} width={96} />
+              <Image alt={episode.name} height={96} objectFit="cover" src={imageUrl} width={96} loading="eager" />
             </_ImgWrapper>
           )}
           <Box width="100%">
@@ -61,6 +63,33 @@ export const EpisodeListItem: React.FC<Props> = ({ bookId, episodeId }) => {
               <Text as="p" color={Color.MONO_80} typography={Typography.NORMAL12}>
                 {episode.description}
               </Text>
+            </Flex>
+          </Box>
+        </Flex>
+        <Spacer height={Space * 1.5} />
+        <Separator />
+      </_Link>
+    </_Wrapper>
+  );
+};
+
+export const EpisodeListItemSkeleton = () => {
+  return (
+    <_Wrapper>
+      <_Link href={''}>
+        <Spacer height={Space * 1.5} />
+        <Flex align="flex-start" gap={Space * 2.5} justify="flex-start">
+          <_ImgWrapper>
+            <Skeleton height={96} width={96} />
+          </_ImgWrapper>
+          <Box width="100%">
+            <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
+              <Flex align="center" justify="flex-start">
+                <Skeleton height={16} width={24} />
+                <Spacer width={Space * 2} />
+                <Skeleton height={16} width={40} />
+              </Flex>
+              <Skeleton height={12} width={40} />
             </Flex>
           </Box>
         </Flex>

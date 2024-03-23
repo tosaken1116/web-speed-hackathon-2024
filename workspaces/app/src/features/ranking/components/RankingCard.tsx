@@ -45,7 +45,7 @@ type Props = {
 const RankingCard: React.FC<Props> = ({ bookId }) => {
   const { data: book } = useBook({ params: { bookId } });
 
-  const imageUrl = `${window.location.href}/assets/images/${book.image.id}.webp`;
+  const imageUrl = `${window.location}/assets/images/${book.image.id}.webp`;
   const authorImageUrl = `${window.location.href}/assets/images/${book.author.image.id}.webp`;
 
   return (
