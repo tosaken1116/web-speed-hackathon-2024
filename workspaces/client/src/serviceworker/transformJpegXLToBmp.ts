@@ -13,7 +13,6 @@ export async function transformJpegXLToBmp(response: Response): Promise<Response
 
   const imageData = decode(await response.arrayBuffer())!;
   const bmpBinary = await new Jimp(imageData).getBufferAsync(Jimp.MIME_BMP);
-
   return new Response(bmpBinary, {
     headers: {
       'Content-Type': 'image/bmp',

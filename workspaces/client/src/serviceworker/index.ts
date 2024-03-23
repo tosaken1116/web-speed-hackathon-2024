@@ -7,7 +7,7 @@ import { zstdFetch as fetch } from './zstdFetch';
 
 // ServiceWorker が負荷で落ちないように並列リクエスト数を制限する
 const queue = new PQueue({
-  concurrency: 5,
+  concurrency: 20,
 });
 
 self.addEventListener('install', (ev: ExtendableEvent) => {
@@ -18,13 +18,13 @@ self.addEventListener('activate', (ev: ExtendableEvent) => {
   ev.waitUntil(self.clients.claim());
 });
 
-self.addEventListener('fetch', (ev: FetchEvent) => {
-  ev.respondWith(
-    queue.add(() => onFetch(ev.request), {
-      throwOnTimeout: true,
-    }),
-  );
-});
+// self.addEventListener('fetch', (ev: FetchEvent) => {
+//   ev.respondWith(
+//     queue.add(() => onFetch(ev.request), {
+//       throwOnTimeout: true,
+//     }),
+//   );
+// });
 
 async function onFetch(request: Request): Promise<Response> {
   // サーバーの負荷を分散するために Jitter 処理をいれる
@@ -32,7 +32,7 @@ async function onFetch(request: Request): Promise<Response> {
   const res = await fetch(request);
 
   if (res.headers.get('Content-Type') === 'image/jxl') {
-    return transformJpegXLToBmp(res);
+    return await transformJpegXLToBmp(res);
   } else {
     return res;
   }
