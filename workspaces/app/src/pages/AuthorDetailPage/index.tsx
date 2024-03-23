@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 import invariant from 'tiny-invariant';
 
 import { useAuthor } from '../../features/author/hooks/useAuthor';
-import { BookListItem } from '../../features/book/components/BookListItem';
+import { BookListItem, BookListItemSkeleton } from '../../features/book/components/BookListItem';
 import { Box } from '../../foundation/components/Box';
 import { Flex } from '../../foundation/components/Flex';
 import { Image } from '../../foundation/components/Image';
@@ -14,6 +14,7 @@ import { Spacer } from '../../foundation/components/Spacer';
 import { Text } from '../../foundation/components/Text';
 import { useImage } from '../../foundation/hooks/useImage';
 import { Color, Space, Typography } from '../../foundation/styles/variables';
+import { Skeleton } from '../../foundation/components/Skeleton';
 
 const _HeadingWrapper = styled.section`
   display: grid;
@@ -36,15 +37,23 @@ const AuthorDetailPage: React.FC = () => {
   invariant(authorId);
 
   const { data: author } = useAuthor({ params: { authorId } });
-
-  const imageUrl = useImage({ height: 128, imageId: author.image.id, width: 128 });
+  const href = `${window.location.protocol}//${window.location.host}`;
+  const imageUrl = `${href}/assets/images/${author.image.id}.webp`;
   const bookListA11yId = useId();
 
   return (
     <Box height="100%" px={Space * 2}>
       <_HeadingWrapper aria-label="作者情報">
         <_AuthorImageWrapper>
-          <Image key={author.id} alt={author.name} height={128} objectFit="cover" src={imageUrl} width={128} />
+          <Image
+            key={author.id}
+            alt={author.name}
+            height={128}
+            objectFit="cover"
+            loading="eager"
+            src={imageUrl}
+            width={128}
+          />
         </_AuthorImageWrapper>
 
         <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
@@ -84,9 +93,41 @@ const AuthorDetailPage: React.FC = () => {
   );
 };
 
+const AuthorDetailPageSkeleton: React.FC = () => {
+  return (
+    <Box height="100%" px={Space * 2}>
+      <_HeadingWrapper aria-label="作者情報">
+        <_AuthorImageWrapper>
+          <Skeleton height={128} width={128} circle />
+        </_AuthorImageWrapper>
+
+        <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
+          <Skeleton height={20} width={128} />
+          <Skeleton height={14} width={128} />
+        </Flex>
+      </_HeadingWrapper>
+
+      <Separator />
+
+      <Box as="section" maxWidth="100%" py={Space * 2} width="100%">
+        <Text as="h2" color={Color.MONO_100} typography={Typography.NORMAL20} weight="bold">
+          作品一覧
+        </Text>
+
+        <Spacer height={Space * 2} />
+
+        <Flex align="center" as="ul" direction="column" justify="center">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <BookListItemSkeleton key={`book-${index}`} />
+          ))}
+        </Flex>
+      </Box>
+    </Box>
+  );
+};
 const AuthorDetailPageWithSuspense: React.FC = () => {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<AuthorDetailPageSkeleton />}>
       <AuthorDetailPage />
     </Suspense>
   );

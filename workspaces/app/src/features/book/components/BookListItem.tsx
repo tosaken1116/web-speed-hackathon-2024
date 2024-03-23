@@ -10,6 +10,7 @@ import { Text } from '../../../foundation/components/Text';
 import { useImage } from '../../../foundation/hooks/useImage';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { useBook } from '../hooks/useBook';
+import { Skeleton } from '../../../foundation/components/Skeleton';
 
 const _Wrapper = styled.li`
   width: 100%;
@@ -34,8 +35,8 @@ type Props = {
 export const BookListItem: React.FC<Props> = ({ bookId }) => {
   const { data: book } = useBook({ params: { bookId } });
 
-  const imageUrl = useImage({ height: 64, imageId: book.image.id, width: 64 });
-
+  const href = `${window.location.protocol}//${window.location.host}`;
+  const imageUrl = `${href}/assets/images/${book.image.id}.webp`;
   return (
     <_Wrapper>
       <_Link href={`/books/${book.id}`}>
@@ -52,6 +53,29 @@ export const BookListItem: React.FC<Props> = ({ bookId }) => {
               <Text as="p" color={Color.MONO_80} typography={Typography.NORMAL12}>
                 {book.description}
               </Text>
+            </Flex>
+          </Box>
+        </Flex>
+        <Spacer height={Space * 1.5} />
+        <Separator />
+      </_Link>
+    </_Wrapper>
+  );
+};
+
+export const BookListItemSkeleton: React.FC = () => {
+  return (
+    <_Wrapper>
+      <_Link href={''}>
+        <Spacer height={Space * 1.5} />
+        <Flex align="flex-start" gap={Space * 2.5} justify="flex-start">
+          <_ImgWrapper>
+            <Skeleton height={64} width={64} />
+          </_ImgWrapper>
+          <Box width="100%">
+            <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
+              <Skeleton height={16} width={100} />
+              <Skeleton height={12} width={100} />
             </Flex>
           </Box>
         </Flex>
