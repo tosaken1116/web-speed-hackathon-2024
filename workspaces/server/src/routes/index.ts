@@ -11,8 +11,11 @@ import { apiApp } from './api';
 import { imageApp } from './image';
 import { ssrApp } from './ssr';
 import { staticApp } from './static';
+import { compress } from 'hono/compress';
 
 const app = new Hono();
+
+app.use(compress());
 
 app.use(secureHeaders());
 app.use(
