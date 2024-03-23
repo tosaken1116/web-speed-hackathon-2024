@@ -7,6 +7,8 @@ import { Link } from '../../../foundation/components/Link';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { useBook } from '../hooks/useBook';
+import { book } from '@wsh-2024/schema/src/models';
+import { Skeleton } from '../../../foundation/components/Skeleton';
 
 const _Wrapper = styled(Link)`
   display: flex;
@@ -63,6 +65,27 @@ const BookCard: React.FC<Props> = ({ bookId }) => {
           <Text color={Color.MONO_100} typography={Typography.NORMAL12}>
             {book.author.name}
           </Text>
+        </Flex>
+      </Flex>
+    </_Wrapper>
+  );
+};
+
+export const BookCardSkeleton = () => {
+  return (
+    <_Wrapper href="">
+      <_ImgWrapper>
+        <Skeleton height={128} width={192} />
+      </_ImgWrapper>
+
+      <Flex align="stretch" direction="column" flexGrow={1} gap={Space * 1} justify="space-between" p={Space * 2}>
+        <Skeleton height={16} width={200} />
+
+        <Flex align="center" gap={Space * 1} justify="flex-end">
+          <_AvatarWrapper>
+            <Skeleton height={32} width={32} circle />
+          </_AvatarWrapper>
+          <Skeleton height={16} width={200} />
         </Flex>
       </Flex>
     </_Wrapper>

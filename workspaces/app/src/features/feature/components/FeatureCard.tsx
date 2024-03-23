@@ -7,6 +7,7 @@ import { Link } from '../../../foundation/components/Link';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { useBook } from '../../book/hooks/useBook';
+import { Skeleton } from '../../../foundation/components/Skeleton';
 
 const _Wrapper = styled(Link)`
   display: grid;
@@ -77,6 +78,37 @@ const FeatureCard: React.FC<Props> = ({ bookId }) => {
           <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
             {book.author.name}
           </Text>
+        </Flex>
+      </_ContentWrapper>
+    </_Wrapper>
+  );
+};
+
+export const FeatureCardSkeleton = () => {
+  return (
+    <_Wrapper href="">
+      <_ImgWrapper>
+        <Skeleton height={96} width={96} />
+      </_ImgWrapper>
+
+      <_ContentWrapper>
+        <Flex align="stretch" direction="column" gap={Space * 2} justify="flex-start">
+          <Flex align="stretch" direction="column" gap={Space * 3} justify="flex-start">
+            <Skeleton height={16} width={200} />
+            <Flex align="stretch" direction="column" gap={Space * 0.8} justify="flex-start">
+              <Skeleton height={12} width={200} />
+              <Skeleton height={12} width={200} />
+              <Skeleton height={12} width={200} />
+              <Skeleton height={12} width={200} />
+            </Flex>
+          </Flex>
+
+          <Flex align="center" gap={Space * 1} justify="flex-end">
+            <_AvatarWrapper>
+              <Skeleton height={32} width={32} circle />
+            </_AvatarWrapper>
+            <Skeleton height={16} width={100} />
+          </Flex>
         </Flex>
       </_ContentWrapper>
     </_Wrapper>

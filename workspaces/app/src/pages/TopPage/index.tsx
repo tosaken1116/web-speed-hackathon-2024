@@ -1,10 +1,10 @@
 import moment from 'moment-timezone';
 import { Suspense, useId } from 'react';
 
-import { BookCard } from '../../features/book/components/BookCard';
-import { FeatureCard } from '../../features/feature/components/FeatureCard';
+import { BookCard, BookCardSkeleton } from '../../features/book/components/BookCard';
+import { FeatureCard, FeatureCardSkeleton, FeatureCardSkeleton } from '../../features/feature/components/FeatureCard';
 import { useFeatureList } from '../../features/feature/hooks/useFeatureList';
-import { RankingCard } from '../../features/ranking/components/RankingCard';
+import { CardSkeleton, RankingCard, RankingCardSkeleton } from '../../features/ranking/components/RankingCard';
 import { useRankingList } from '../../features/ranking/hooks/useRankingList';
 import { useRelease } from '../../features/release/hooks/useRelease';
 import { Box } from '../../foundation/components/Box';
@@ -15,6 +15,7 @@ import { Color, Space, Typography } from '../../foundation/styles/variables';
 import { getDayOfWeekStr } from '../../lib/date/getDayOfWeekStr';
 
 import { CoverSection } from './internal/CoverSection';
+import { release } from '@wsh-2024/schema/src/models';
 
 const TopPage: React.FC = () => {
   const todayStr = getDayOfWeekStr(moment());
@@ -82,9 +83,66 @@ const TopPage: React.FC = () => {
   );
 };
 
+const TopPageSkeleton = () => {
+  return (
+    <Flex align="flex-start" direction="column" gap={Space * 2} justify="center" pb={Space * 2}>
+      <Box as="header" maxWidth="100%" width="100%">
+        <CoverSection />
+      </Box>
+      <Box as="main" maxWidth="100%" width="100%">
+        <Box as="section" maxWidth="100%" mt={16} width="100%">
+          <Text as="h2" color={Color.MONO_100} typography={Typography.NORMAL20} weight="bold">
+            ピックアップ
+          </Text>
+          <Spacer height={Space * 2} />
+          <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
+            <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <FeatureCardSkeleton key={`feature-${index}`} />
+              ))}
+            </Flex>
+          </Box>
+        </Box>
+
+        <Spacer height={Space * 2} />
+
+        <Box as="section" maxWidth="100%" width="100%">
+          <Text as="h2" color={Color.MONO_100} typography={Typography.NORMAL20} weight="bold">
+            ランキング
+          </Text>
+          <Spacer height={Space * 2} />
+          <Box maxWidth="100%" overflowX="hidden" overflowY="hidden">
+            <Flex align="center" as="ul" direction="column" justify="center">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <RankingCardSkeleton key={`ranking-${index}`} />
+              ))}
+            </Flex>
+          </Box>
+        </Box>
+
+        <Spacer height={Space * 2} />
+
+        <Box as="section" maxWidth="100%" width="100%">
+          <Text as="h2" color={Color.MONO_100} typography={Typography.NORMAL20} weight="bold">
+            本日更新
+          </Text>
+          <Spacer height={Space * 2} />
+          <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
+            <Flex align="stretch" gap={Space * 2} justify="flex-start">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <BookCardSkeleton key={`release-${index}`} />
+              ))}
+            </Flex>
+          </Box>
+        </Box>
+      </Box>
+    </Flex>
+  );
+};
+
 const TopPageWithSuspense: React.FC = () => {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<TopPageSkeleton />}>
       <TopPage />
     </Suspense>
   );

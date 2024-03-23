@@ -11,9 +11,11 @@ import { Spacer } from '../../../foundation/components/Spacer';
 import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { useBook } from '../../book/hooks/useBook';
+import { Skeleton } from '../../../foundation/components/Skeleton';
 
 const _Wrapper = styled.li`
   width: 100%;
+  list-style: none;
 `;
 
 const _Link = styled(Link)`
@@ -83,6 +85,47 @@ const RankingCard: React.FC<Props> = ({ bookId }) => {
               <Text color={Color.MONO_80} typography={Typography.NORMAL12}>
                 {book.author.name}
               </Text>
+            </Flex>
+
+            <Spacer height={Space * 1} />
+
+            <Flex align="center" justify="flex-end">
+              <Text color={Color.Secondary} typography={Typography.NORMAL14} weight="bold">
+                この漫画を読む
+              </Text>
+              <SvgIcon color={Color.Secondary} height={32} type="NavigateNext" width={32} />
+            </Flex>
+          </Box>
+        </Flex>
+        <Spacer height={Space * 1.5} />
+        <Separator />
+      </_Link>
+    </_Wrapper>
+  );
+};
+
+export const RankingCardSkeleton = () => {
+  return (
+    <_Wrapper>
+      <_Link href="">
+        <Spacer height={Space * 1.5} />
+        <Flex align="flex-start" gap={Space * 2.5} justify="flex-start">
+          <_ImgWrapper>
+            <Skeleton height={96} width={96} />
+          </_ImgWrapper>
+          <Box width="100%">
+            <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
+              <Skeleton height={24} width={200} />
+              <Skeleton height={12} width={300} />
+            </Flex>
+
+            <Spacer height={Space * 1} />
+
+            <Flex align="center" gap={Space * 1} justify="flex-end">
+              <_AvatarWrapper>
+                <Skeleton height={32} width={32} circle />
+              </_AvatarWrapper>
+              <Skeleton height={12} width={64} />
             </Flex>
 
             <Spacer height={Space * 1} />
