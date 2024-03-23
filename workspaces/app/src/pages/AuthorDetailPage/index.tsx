@@ -12,7 +12,6 @@ import { Image } from '../../foundation/components/Image';
 import { Separator } from '../../foundation/components/Separator';
 import { Spacer } from '../../foundation/components/Spacer';
 import { Text } from '../../foundation/components/Text';
-import { useImage } from '../../foundation/hooks/useImage';
 import { Color, Space, Typography } from '../../foundation/styles/variables';
 import { Skeleton } from '../../foundation/components/Skeleton';
 
@@ -117,7 +116,7 @@ const AuthorDetailPageSkeleton: React.FC = () => {
         <Spacer height={Space * 2} />
 
         <Flex align="center" as="ul" direction="column" justify="center">
-          {Array.from({ length: 5 }).map((_, index) => (
+          {Array.from({ length: 10 }).map((_, index) => (
             <BookListItemSkeleton key={`book-${index}`} />
           ))}
         </Flex>
