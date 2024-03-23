@@ -9,6 +9,7 @@ import { Color, Radius, Space, Typography } from '../../../foundation/styles/var
 import { useBook } from '../hooks/useBook';
 import { book } from '@wsh-2024/schema/src/models';
 import { Skeleton } from '../../../foundation/components/Skeleton';
+import { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 
 const _Wrapper = styled(Link)`
   display: flex;
@@ -34,17 +35,15 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  bookId: string;
+  book: GetBookResponse;
 };
 
-const BookCard: React.FC<Props> = ({ bookId }) => {
-  const { data: book } = useBook({ params: { bookId } });
-
+const BookCard: React.FC<Props> = ({ book }) => {
   const imageUrl = `${window.location.href}/assets/images/${book.image.id}.webp`;
   const authorImageUrl = `${window.location.href}/assets/images/${book.author.image.id}.webp`;
 
   return (
-    <_Wrapper href={`/books/${bookId}`}>
+    <_Wrapper href={`/books/${book.id}`}>
       <_ImgWrapper>
         <Image alt={book.image.alt} height={128} objectFit="cover" src={imageUrl} width={192} />
       </_ImgWrapper>

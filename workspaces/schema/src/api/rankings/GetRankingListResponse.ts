@@ -14,6 +14,7 @@ export const GetRankingListResponseSchema = createSelectSchema(ranking)
         description: true,
         id: true,
         name: true,
+        nameRuby: true,
       })
       .extend({
         author: createSelectSchema(author)

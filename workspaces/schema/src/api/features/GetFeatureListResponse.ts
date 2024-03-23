@@ -13,6 +13,7 @@ export const GetFeatureListResponseSchema = createSelectSchema(feature)
         description: true,
         id: true,
         name: true,
+        nameRuby: true,
       })
       .extend({
         author: createSelectSchema(author)

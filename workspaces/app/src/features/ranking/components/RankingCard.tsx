@@ -12,6 +12,7 @@ import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { useBook } from '../../book/hooks/useBook';
 import { Skeleton } from '../../../foundation/components/Skeleton';
+import { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 
 const _Wrapper = styled.li`
   width: 100%;
@@ -39,12 +40,10 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  bookId: string;
+  book: GetBookResponse;
 };
 
-const RankingCard: React.FC<Props> = ({ bookId }) => {
-  const { data: book } = useBook({ params: { bookId } });
-
+const RankingCard: React.FC<Props> = ({ book }) => {
   const imageUrl = `${window.location}/assets/images/${book.image.id}.webp`;
   const authorImageUrl = `${window.location.href}/assets/images/${book.author.image.id}.webp`;
 
