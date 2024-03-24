@@ -32,8 +32,8 @@ export const SearchResult: React.FC<Props> = ({ books, keyword }) => {
           </Text>
         }
       >
-        {relatedBooks.map((book) => (
-          <BookListItem key={book.id} bookId={book.id} />
+        {relatedBooks.map((book, index) => (
+          <BookListItem key={book.id} book={book} eagerLoad={index < 5} />
         ))}
         {relatedBooks.length === 0 && (
           <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
