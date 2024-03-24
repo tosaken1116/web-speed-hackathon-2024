@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { clamp } from 'lodash-es';
 import { ComicViewerCore } from '../../../features/viewer/components/ComicViewerCore';
@@ -44,7 +44,7 @@ export const ComicViewer: React.FC<Props> = ({ episode }) => {
   // 1ページの高さの候補
   const candidatePageHeight = (candidatePageWidth / IMAGE_WIDTH) * IMAGE_HEIGHT;
   // ビュアーの高さ
-  const viewerHeight = _.clamp(candidatePageHeight, MIN_VIEWER_HEIGHT, MAX_VIEWER_HEIGHT);
+  const viewerHeight = clamp(candidatePageHeight, MIN_VIEWER_HEIGHT, MAX_VIEWER_HEIGHT);
 
   return (
     <_Container ref={ref}>
