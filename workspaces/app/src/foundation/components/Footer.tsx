@@ -12,6 +12,7 @@ import { Spacer } from './Spacer';
 import { Text } from './Text';
 
 import { useInfo } from '../../features/info/hooks/useInfo';
+import { Skeleton } from './Skeleton';
 
 type SetAtom<Args extends unknown[], Result> = (...args: Args) => Result;
 
@@ -58,11 +59,11 @@ const ModalOpenButton = ({ updateDialogContent, id, isClient, type, children }: 
 const FooterSkeleton = () => {
   return (
     <>
-      <Button disabled>利用規約</Button>
-      <Button disabled>お問い合わせ</Button>
-      <Button disabled>Q&A</Button>
-      <Button disabled>運営会社</Button>
-      <Button disabled>Cyber TOONとは</Button>
+      <Skeleton height={45} fullWidth />
+      <Skeleton height={45} fullWidth />
+      <Skeleton height={45} fullWidth />
+      <Skeleton height={45} fullWidth />
+      <Skeleton height={45} fullWidth />
     </>
   );
 };
@@ -80,6 +81,9 @@ export const Footer: React.FC = () => {
   const overviewDialogA11yId = useId();
 
   const updateDialogContent = useSetAtom(DialogContentAtom);
+  if (!isClient) {
+    return null;
+  }
   return (
     <Box as="footer" backgroundColor={Color.Background} p={Space * 1}>
       <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">

@@ -12,10 +12,12 @@ import { imageApp } from './image';
 import { ssrApp } from './ssr';
 import { staticApp } from './static';
 import { compress } from 'hono/compress';
+import { logger } from 'hono/logger';
 
 const app = new Hono();
 
 app.use(compress());
+app.use(logger());
 
 app.use(secureHeaders());
 app.use(
