@@ -80,9 +80,6 @@ export const Footer: React.FC = () => {
   const overviewDialogA11yId = useId();
 
   const updateDialogContent = useSetAtom(DialogContentAtom);
-  if (!isClient) {
-    return <></>;
-  }
   return (
     <Box as="footer" backgroundColor={Color.Background} p={Space * 1}>
       <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
