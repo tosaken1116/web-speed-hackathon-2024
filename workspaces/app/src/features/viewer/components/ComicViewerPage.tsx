@@ -29,7 +29,7 @@ export const ComicViewerPage = ({ pageImageId }: Props) => {
     canvas.height = image.naturalHeight;
     const ctx = canvas.getContext('2d')!;
 
-    await decrypt({
+    decrypt({
       exportCanvasContext: ctx,
       sourceImage: image,
       sourceImageInfo: {
