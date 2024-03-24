@@ -265,7 +265,7 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
                 height={200}
                 onClick={() => {
                   formik.setFieldTouched('image', true, false);
-                  formik.setFieldValue('image', ev.target.files?.[0], true);
+                  thumbnailInputRef.current?.click();
                 }}
                 overflow="hidden"
                 position="relative"
