@@ -5,7 +5,6 @@ import type { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResp
 
 import { useBookList } from '../../../../features/books/hooks/useBookList';
 import { useDeleteBook } from '../../../../features/books/hooks/useDeleteBook';
-import { getImageUrl } from '../../../../lib/image/getImageUrl';
 
 type BookDetailContentProps = {
   book: GetBookResponse;
@@ -34,18 +33,12 @@ export const BookDetailContent: React.FC<BookDetailContentProps> = ({ book, onCl
       },
     );
   }, [book, deleteBook, onCloseDialog, refetchBookList]);
-
+  const href = `${window.location.protocol}//${window.location.host}`;
+  const imageUrl = `${href}/assets/images/${book.image.id}.webp`;
   return (
     <Box aria-label="作品詳細" as="section">
       <Flex align="center" pb={2}>
-        <Image
-          alt={book.name}
-          aspectRatio="3 / 4"
-          height={256}
-          objectFit="cover"
-          src={getImageUrl({ format: 'jpg', imageId: book.image.id })}
-          width={192}
-        />
+        <Image alt={book.name} aspectRatio="3 / 4" height={256} objectFit="cover" src={imageUrl} width={192} />
         <Stack p={4} spacing={2}>
           <StackItem>
             <Text color="gray.600" fontSize="sm">

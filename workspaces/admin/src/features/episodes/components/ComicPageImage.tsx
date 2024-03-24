@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { decrypt } from '@wsh-2024/image-encrypt/src/decrypt';
 
-import { getImageUrl } from '../../../lib/image/getImageUrl';
-
 type Props = {
   pageImageId: string;
 };
@@ -14,10 +12,8 @@ export const ComicPageImage: React.FC<Props> = ({ pageImageId }) => {
   const { data: blob } = useQuery({
     queryFn: async ({ queryKey: [, { pageImageId }] }) => {
       const image = new Image();
-      image.src = getImageUrl({
-        format: 'jxl',
-        imageId: pageImageId,
-      });
+      const href = `${window.location.protocol}//${window.location.host}`;
+      image.src = `${href}/assets/images/${pageImageId}.webp`;
       await image.decode();
 
       const canvas = document.createElement('canvas');

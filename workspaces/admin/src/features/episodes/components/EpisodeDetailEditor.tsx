@@ -179,7 +179,8 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
       episodePageId,
     });
   };
-
+  const href = `${window.location.protocol}//${window.location.host}`;
+  const imageUrl = `${href}/assets/images/${episode.image.id}.webp`;
   return (
     <Stack as="section" pb={16} spacing={6}>
       <StackItem>
@@ -278,12 +279,7 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
                   _groupHover={{ opacity: 0.75 }}
                   alt={episode?.image.id}
                   height={200}
-                  src={
-                    thumbnailUrl ??
-                    (episode != null
-                      ? getImageUrl({ format: 'jpg', height: 200, imageId: episode.image.id, width: 200 })
-                      : undefined)
-                  }
+                  src={thumbnailUrl ?? (episode != null ? imageUrl : undefined)}
                   width={200}
                 />
                 <Center
