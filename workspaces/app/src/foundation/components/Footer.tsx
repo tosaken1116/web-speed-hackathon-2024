@@ -1,5 +1,5 @@
 import { useSetAtom } from 'jotai';
-import React, { useId } from 'react';
+import React, { Suspense, useId } from 'react';
 import styled from 'styled-components';
 
 import { DialogContentAtom } from '../atoms/DialogContentAtom';
@@ -55,6 +55,17 @@ const ModalOpenButton = ({ updateDialogContent, id, isClient, type, children }: 
   );
 };
 
+const FooterSkeleton = () => {
+  return (
+    <>
+      <Button disabled>利用規約</Button>
+      <Button disabled>お問い合わせ</Button>
+      <Button disabled>Q&A</Button>
+      <Button disabled>運営会社</Button>
+      <Button disabled>Cyber TOONとは</Button>
+    </>
+  );
+};
 export const Footer: React.FC = () => {
   const [isClient, setIsClient] = React.useState(false);
 
@@ -77,46 +88,48 @@ export const Footer: React.FC = () => {
       <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
         <img alt="Cyber TOON" width={189} height={45} src="/assets/cyber-toon.svg" />
         <Flex align="start" direction="row" gap={Space * 1.5} justify="center">
-          <ModalOpenButton
-            isClient={isClient}
-            id={termDialogA11yId}
-            type="term"
-            updateDialogContent={updateDialogContent}
-          >
-            利用規約
-          </ModalOpenButton>
-          <ModalOpenButton
-            isClient={isClient}
-            id={contactDialogA11yId}
-            type="contact"
-            updateDialogContent={updateDialogContent}
-          >
-            お問い合わせ
-          </ModalOpenButton>
-          <ModalOpenButton
-            isClient={isClient}
-            id={questionDialogA11yId}
-            type="question"
-            updateDialogContent={updateDialogContent}
-          >
-            Q&A
-          </ModalOpenButton>
-          <ModalOpenButton
-            isClient={isClient}
-            id={companyDialogA11yId}
-            type="company"
-            updateDialogContent={updateDialogContent}
-          >
-            運営会社
-          </ModalOpenButton>
-          <ModalOpenButton
-            isClient={isClient}
-            id={overviewDialogA11yId}
-            type="overview"
-            updateDialogContent={updateDialogContent}
-          >
-            Cyber TOONとは
-          </ModalOpenButton>
+          <Suspense fallback={<FooterSkeleton />}>
+            <ModalOpenButton
+              isClient={isClient}
+              id={termDialogA11yId}
+              type="term"
+              updateDialogContent={updateDialogContent}
+            >
+              利用規約
+            </ModalOpenButton>
+            <ModalOpenButton
+              isClient={isClient}
+              id={contactDialogA11yId}
+              type="contact"
+              updateDialogContent={updateDialogContent}
+            >
+              お問い合わせ
+            </ModalOpenButton>
+            <ModalOpenButton
+              isClient={isClient}
+              id={questionDialogA11yId}
+              type="question"
+              updateDialogContent={updateDialogContent}
+            >
+              Q&A
+            </ModalOpenButton>
+            <ModalOpenButton
+              isClient={isClient}
+              id={companyDialogA11yId}
+              type="company"
+              updateDialogContent={updateDialogContent}
+            >
+              運営会社
+            </ModalOpenButton>
+            <ModalOpenButton
+              isClient={isClient}
+              id={overviewDialogA11yId}
+              type="overview"
+              updateDialogContent={updateDialogContent}
+            >
+              Cyber TOONとは
+            </ModalOpenButton>
+          </Suspense>
         </Flex>
       </Flex>
     </Box>

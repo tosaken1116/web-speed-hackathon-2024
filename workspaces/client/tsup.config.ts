@@ -39,7 +39,7 @@ export default defineConfig(async (): Promise<Options[]> => {
       esbuildPlugins: [
         polyfillNode({
           globals: {
-            process: false,
+            process: true,
           },
           polyfills: {
             events: true,
