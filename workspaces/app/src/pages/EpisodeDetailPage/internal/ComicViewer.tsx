@@ -32,8 +32,10 @@ type Props = {
 };
 
 export const ComicViewer: React.FC<Props> = ({ episode }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [cqw, setCqw] = useState((ref?.current?.getBoundingClientRect().width ?? 0) / 100);
+  const [el, ref] = useState<HTMLDivElement | null>(null);
+
+  // コンテナの幅
+  const cqw = (el?.getBoundingClientRect().width ?? 0) / 100;
 
   // 1画面に表示できるページ数（1 or 2）
   const pageCountParView = 100 * cqw <= 2 * MIN_PAGE_WIDTH ? 1 : 2;
@@ -42,16 +44,7 @@ export const ComicViewer: React.FC<Props> = ({ episode }) => {
   // 1ページの高さの候補
   const candidatePageHeight = (candidatePageWidth / IMAGE_WIDTH) * IMAGE_HEIGHT;
   // ビュアーの高さ
-  const viewerHeight = clamp(candidatePageHeight, MIN_VIEWER_HEIGHT, MAX_VIEWER_HEIGHT);
-  useEffect(() => {
-    const onResize = () => {
-      setCqw((ref?.current?.getBoundingClientRect().width ?? 0) / 100);
-    };
-    ref.current?.addEventListener('resize', onResize);
-    return () => {
-      ref.current?.removeEventListener('resize', onResize);
-    };
-  }, []);
+  const viewerHeight = _.clamp(candidatePageHeight, MIN_VIEWER_HEIGHT, MAX_VIEWER_HEIGHT);
 
   return (
     <_Container ref={ref}>
