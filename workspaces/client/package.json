@@ -7,7 +7,7 @@
     "build:clean": "rm -rf ./dist",
     "build:copy": "cp -r ./assets ./dist",
     "build:tsup": "tsup --env.NODE_ENV production",
-    "build:vite": "vite build --mode client "
+    "build:vite": "vite build --mode client"
   },
   "dependencies": {
     "@jsquash/jxl": "1.1.0",

@@ -8,9 +8,14 @@ export default defineConfig(({ mode }) => {
     return {
       build: {
         rollupOptions: {
-          input: './src/index.tsx',
+          input: { client: './src/index.tsx' },
           output: {
-            entryFileNames: 'client.global.js',
+            entryFileNames: (c) => {
+              if (c.name === 'serviceWorker') {
+                return 'serviceworker.js';
+              }
+              return '[name].js';
+            },
           },
           external: ['hono'],
         },
