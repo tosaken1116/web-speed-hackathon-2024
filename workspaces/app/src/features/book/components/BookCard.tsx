@@ -7,6 +7,7 @@ import { Text } from '../../../foundation/components/Text';
 import { Color, Radius, Space, Typography } from '../../../foundation/styles/variables';
 import { Skeleton } from '../../../foundation/components/Skeleton';
 import { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
+import { GetAuthorResponse } from '@wsh-2024/schema/src/api/authors/GetAuthorResponse';
 
 const _Wrapper = styled(Link)`
   display: flex;
@@ -32,7 +33,12 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  book: GetBookResponse;
+  book: {
+    id: GetBookResponse['id'];
+    name: GetBookResponse['name'];
+    image: GetBookResponse['image'];
+    author: GetAuthorResponse;
+  };
 };
 
 const BookCard: React.FC<Props> = ({ book }) => {
