@@ -4,5 +4,6 @@ import { infoApiClient } from '../apiClient/infoApiClient';
 export function useInfo(...[options]: Parameters<typeof infoApiClient.fetch>) {
   return useSWR(infoApiClient.fetch$$key(options), infoApiClient.fetch, {
     suspense: true,
+    refreshInterval: 1000 * 60 * 60,
   });
 }
