@@ -1,5 +1,3 @@
-import pages from '@hono/vite-cloudflare-pages';
-import devServer from '@hono/vite-dev-server';
 import { defineConfig } from 'vite';
 import nodePolyfills from 'vite-plugin-node-stdlib-browser';
 
@@ -8,11 +6,11 @@ export default defineConfig(({ mode }) => {
     return {
       build: {
         rollupOptions: {
-          input: { client: './src/index.tsx' },
+          input: { client: './src/client.tsx', admin: './src/admin.tsx' },
           output: {
             entryFileNames: (c) => {
-              if (c.name === 'serviceWorker') {
-                return 'serviceworker.js';
+              if (c.name === 'client') {
+                return 'client.js';
               }
               return '[name].js';
             },
