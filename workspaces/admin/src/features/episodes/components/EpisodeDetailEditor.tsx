@@ -179,8 +179,8 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
       episodePageId,
     });
   };
-  const href = `${window.location.protocol}//${window.location.host}`;
-  const imageUrl = `${href}/assets/images/${episode.image.id}.webp`;
+  const href = `${window.location.protocol}://${window.location.host}`;
+  const imageUrl = episode?.image !== null ? `${href}/assets/images/${episode?.image.id}.webp` : '';
   return (
     <Stack as="section" pb={16} spacing={6}>
       <StackItem>
