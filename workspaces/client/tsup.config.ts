@@ -4,8 +4,8 @@ import path from 'node:path';
 import { pnpmWorkspaceRoot as findWorkspaceDir } from '@node-kit/pnpm-workspace-root';
 import { polyfillNode } from 'esbuild-plugin-polyfill-node';
 import findPackageDir from 'pkg-dir';
-import { defineConfig } from 'tsup';
 import type { Options } from 'tsup';
+import { defineConfig } from 'tsup';
 
 export default defineConfig(async (): Promise<Options[]> => {
   const PACKAGE_DIR = (await findPackageDir(process.cwd()))!;
@@ -54,7 +54,7 @@ export default defineConfig(async (): Promise<Options[]> => {
         '.wasm': 'binary',
       },
       metafile: true,
-      minify: false,
+      minify: true,
       outDir: OUTPUT_DIR,
       platform: 'browser',
       shims: true,
