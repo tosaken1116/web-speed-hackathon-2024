@@ -1,4 +1,4 @@
-import * as Icons from '@mui/icons-material';
+import { ArrowBack, Close, Favorite, FavoriteBorder, NavigateNext, Search } from '@mui/icons-material';
 
 type Props = {
   color: string;
@@ -6,6 +6,15 @@ type Props = {
   type: keyof typeof Icons;
   width: number;
 };
+
+const Icons = {
+  ArrowBack: ArrowBack,
+  Close: Close,
+  Favorite: Favorite,
+  FavoriteBorder: FavoriteBorder,
+  NavigateNext: NavigateNext,
+  Search: Search,
+} as const;
 
 export const SvgIcon: React.FC<Props> = ({ color, height, type, width }) => {
   // eslint-disable-next-line
