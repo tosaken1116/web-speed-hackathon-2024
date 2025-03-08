@@ -12,6 +12,8 @@ ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 COPY . .
 RUN corepack enable pnpm
 RUN pnpm install
+RUN pnpm rebuild better-sqlite3
+
 RUN pnpm build
 
 ENV PORT 8000
