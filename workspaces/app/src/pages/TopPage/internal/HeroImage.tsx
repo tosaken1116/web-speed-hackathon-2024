@@ -13,7 +13,7 @@ const _Image = styled.img`
 export const HeroImage: React.FC = () => {
   return (
     <_Wrapper>
-      <_Image alt="Cyber TOON" src="/assets/hero.webp" />
+      <_Image alt="Cyber TOON" src="/assets/hero.webp" loading="eager" />
     </_Wrapper>
   );
 };
