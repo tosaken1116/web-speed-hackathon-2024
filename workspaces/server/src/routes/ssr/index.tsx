@@ -15,48 +15,93 @@ import { getDayOfWeekStr } from '@wsh-2024/app/src/lib/date/getDayOfWeekStr';
 
 import { bookApiClient } from '@wsh-2024/app/src/features/book/apiClient/bookApiClient';
 import { INDEX_HTML_PATH } from '../../constants/paths';
+import { episodeApiClient } from '@wsh-2024/app/src/features/episode/apiClient/episodeApiClient';
+import { authorApiClient } from '@wsh-2024/app/src/features/author/apiClient/authorApiClient';
 
 const app = new Hono();
 
-async function createInjectDataStr(): Promise<Record<string, unknown>> {
+async function createInjectDataStr(path: string): Promise<Record<string, unknown>> {
   const json: Record<string, unknown> = {};
+  if (path === '/') {
+    const getRelease = async () => {
+      const dayOfWeek = getDayOfWeekStr();
+      const releases = await releaseApiClient.fetch({ params: { dayOfWeek } });
+      json[unstable_serialize(releaseApiClient.fetch$$key({ params: { dayOfWeek } }))] = releases;
+      await Promise.all(
+        releases?.books?.map(async (book) => {
+          const bookDetail = await bookApiClient.fetch({ params: { bookId: book.id } });
+          json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId: book.id } }))] = bookDetail;
+        }),
+      );
+    };
 
-  const getRelease = async () => {
-    const dayOfWeek = getDayOfWeekStr();
-    const releases = await releaseApiClient.fetch({ params: { dayOfWeek } });
-    json[unstable_serialize(releaseApiClient.fetch$$key({ params: { dayOfWeek } }))] = releases;
-    await Promise.all(
-      releases?.books?.map(async (book) => {
-        const bookDetail = await bookApiClient.fetch({ params: { bookId: book.id } });
-        json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId: book.id } }))] = bookDetail;
-      }),
-    );
-  };
+    const getFeature = async () => {
+      const features = await featureApiClient.fetchList({ query: {} });
+      json[unstable_serialize(featureApiClient.fetchList$$key({ query: {} }))] = features;
+      await Promise.all(
+        features?.map(async ({ book }) => {
+          const bookDetail = await bookApiClient.fetch({ params: { bookId: book.id } });
+          json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId: book.id } }))] = bookDetail;
+        }),
+      );
+    };
 
-  const getFeature = async () => {
-    const features = await featureApiClient.fetchList({ query: {} });
-    json[unstable_serialize(featureApiClient.fetchList$$key({ query: {} }))] = features;
-    await Promise.all(
-      features?.map(async ({ book }) => {
-        const bookDetail = await bookApiClient.fetch({ params: { bookId: book.id } });
-        json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId: book.id } }))] = bookDetail;
-      }),
-    );
-  };
+    const getRanking = async () => {
+      const ranking = await rankingApiClient.fetchList({ query: {} });
+      json[unstable_serialize(rankingApiClient.fetchList$$key({ query: {} }))] = ranking;
+      await Promise.all(
+        ranking?.map(async ({ book }) => {
+          const bookDetail = await bookApiClient.fetch({ params: { bookId: book.id } });
+          json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId: book.id } }))] = bookDetail;
+        }),
+      );
+    };
 
-  const getRanking = async () => {
-    const ranking = await rankingApiClient.fetchList({ query: {} });
-    json[unstable_serialize(rankingApiClient.fetchList$$key({ query: {} }))] = ranking;
-    await Promise.all(
-      ranking?.map(async ({ book }) => {
-        const bookDetail = await bookApiClient.fetch({ params: { bookId: book.id } });
-        json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId: book.id } }))] = bookDetail;
-      }),
-    );
-  };
+    await Promise.all([getRelease(), getFeature(), getRanking()]);
+    return json;
+  }
+  if (path.startsWith('/books/')) {
+    const bookId = path.split('/')[2];
+    const getBook = async () => {
+      const bookDetail = await bookApiClient.fetch({ params: { bookId } });
+      json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId } }))] = bookDetail;
+    };
+    const getEpisodes = async () => {
+      const episodes = await episodeApiClient.fetchList({ query: { bookId } });
+      json[unstable_serialize(episodeApiClient.fetchList$$key({ query: { bookId } }))] = episodes;
 
-  await Promise.all([getRelease(), getFeature(), getRanking()]);
+      await Promise.all(
+        episodes?.map(async (episode) => {
+          const episodeDetail = await episodeApiClient.fetch({ params: { episodeId: episode.id } });
+          json[unstable_serialize(episodeApiClient.fetch$$key({ params: { episodeId: episode.id } }))] = episodeDetail;
+        }),
+      );
+    };
 
+    await Promise.all([getBook(), getEpisodes()]);
+    return json;
+  }
+  if (path.startsWith('/authors/')) {
+    const authorId = path.split('/')[2];
+    const getAuthor = async () => {
+      const authorDetail = await authorApiClient.fetch({ params: { authorId } });
+      json[unstable_serialize(authorApiClient.fetch$$key({ params: { authorId } }))] = authorDetail;
+    };
+    const getBooks = async () => {
+      const books = await bookApiClient.fetchList({ query: { authorId } });
+      json[unstable_serialize(bookApiClient.fetchList$$key({ query: { authorId } }))] = books;
+
+      await Promise.all(
+        books?.map(async (book) => {
+          const bookDetail = await bookApiClient.fetch({ params: { bookId: book.id } });
+          json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId: book.id } }))] = bookDetail;
+        }),
+      );
+    };
+
+    await Promise.all([getAuthor(), getBooks()]);
+    return json;
+  }
   return json;
 }
 
@@ -71,7 +116,8 @@ async function createHTML({ body, styleTags }: { body: string; styleTags: string
 }
 
 app.get('*', async (c) => {
-  const injectData = await createInjectDataStr();
+  console.log(c.req.path);
+  const injectData = await createInjectDataStr(c.req.path);
   const sheet = new ServerStyleSheet();
   try {
     const body = ReactDOMServer.renderToString(
