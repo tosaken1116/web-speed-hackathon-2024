@@ -1,13 +1,8 @@
 import { useSetAtom } from 'jotai';
-import React, { useId } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import styled from 'styled-components';
 
 import { DialogContentAtom } from '../atoms/DialogContentAtom';
-import { COMPANY } from '../constants/Company';
-import { CONTACT } from '../constants/Contact';
-import { OVERVIEW } from '../constants/Overview';
-import { QUESTION } from '../constants/Question';
-import { TERM } from '../constants/Term';
 import { Color, Space, Typography } from '../styles/variables';
 
 import { Box } from './Box';
@@ -16,6 +11,28 @@ import { Flex } from './Flex';
 import { Spacer } from './Spacer';
 import { Text } from './Text';
 
+const FetchText = ({ category }: { category: 'Term' | 'Question' | 'Overview' | 'Contact' | 'Company' }) => {
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    const fetchText = async () => {
+      try {
+        const response = await fetch(`/assets/${category}.txt`); // テキストファイルのパス
+        const data = await response.text();
+        setText(data);
+      } catch (error) {
+        console.error('Failed to fetch text:', error);
+      }
+    };
+
+    fetchText();
+  }, []);
+  return (
+    <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
+      {text}
+    </Text>
+  );
+};
 const _Button = styled(Button)`
   color: ${Color.MONO_A};
 `;
@@ -46,9 +63,7 @@ export const Footer: React.FC = () => {
           利用規約
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {TERM}
-        </Text>
+        <FetchText category="Term" />
       </_Content>,
     );
   };
@@ -60,9 +75,7 @@ export const Footer: React.FC = () => {
           お問い合わせ
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {CONTACT}
-        </Text>
+        <FetchText category="Contact" />
       </_Content>,
     );
   };
@@ -74,9 +87,7 @@ export const Footer: React.FC = () => {
           Q&A
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {QUESTION}
-        </Text>
+        <FetchText category="Question" />
       </_Content>,
     );
   };
@@ -88,9 +99,7 @@ export const Footer: React.FC = () => {
           運営会社
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {COMPANY}
-        </Text>
+        <FetchText category="Company" />
       </_Content>,
     );
   };
@@ -102,9 +111,7 @@ export const Footer: React.FC = () => {
           Cyber TOONとは
         </Text>
         <Spacer height={Space * 1} />
-        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
-          {OVERVIEW}
-        </Text>
+        <FetchText category="Overview" />
       </_Content>,
     );
   };
