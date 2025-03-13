@@ -25,7 +25,7 @@ app.use(
   }),
 );
 app.use(compressMiddleware);
-app.use(cacheControlMiddleware);
+// app.use(cacheControlMiddleware);
 
 app.get('/healthz', (c) => {
   return c.body('live', 200);

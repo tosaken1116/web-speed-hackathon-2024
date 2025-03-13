@@ -226,4 +226,4 @@ const ComicViewerCoreWithSuspense: React.FC<Props> = ({ episodeId }) => {
   );
 };
 
-export { ComicViewerCoreWithSuspense as ComicViewerCore };
+export { ComicViewerCore };

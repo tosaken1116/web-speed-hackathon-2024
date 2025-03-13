@@ -78,4 +78,4 @@ const BookCardWithSuspense: React.FC<Props> = (props) => {
   );
 };
 
-export { BookCardWithSuspense as BookCard };
+export { BookCard };

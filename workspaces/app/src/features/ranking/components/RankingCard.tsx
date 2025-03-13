@@ -111,4 +111,4 @@ const RankingCardWithSuspense: React.FC<Props> = (props) => {
   );
 };
 
-export { RankingCardWithSuspense as RankingCard };
+export { RankingCard };

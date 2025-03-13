@@ -92,4 +92,4 @@ const FeatureCardWithSuspense: React.FC<Props> = (props) => {
   );
 };
 
-export { FeatureCardWithSuspense as FeatureCard };
+export { FeatureCard };
